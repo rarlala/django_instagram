@@ -1,7 +1,13 @@
-from django.shortcuts import render
+from django.contrib.auth import login, authenticate
+from django.shortcuts import redirect, render
+
 
 def index(request):
-    return render(request, 'index.html')
+    if request.user.is_authenticated:
+        return redirect('posts:postList')
+
+    else:
+        return render(request, 'index.html')
 
 # base.html 추가
 # 상단에 {% load static %}

@@ -11,7 +11,8 @@ def login_view(request):
 
         if user:
             login(request, user)
-            return redirect('index')
+
+            return redirect('posts:postList')
 
         else:
             return redirect('index')
