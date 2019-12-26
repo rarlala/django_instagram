@@ -24,9 +24,13 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(ROOT_DIR, '.media')
 MEDIA_URL = '/media/'
 
-APP_URL = os.path.join(ROOT_DIR, 'app')
-TEMPLATES_DIR = os.path.join(APP_URL, 'templates')
-# MEMBERS_URL = os.path.join(TEMPLATE_DIR, 'members')
+TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
+
+# 정적파일 추가
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [
+    STATIC_DIR,
+]
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/

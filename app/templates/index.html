@@ -1,4 +1,33 @@
-<h1>INDEX</h1>
+{% extends 'base.html' %}
+{% load static %}
 
-<div>{{request.user}}</div>
-<div>{{request.user.is_authenticated}}</div>
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/index.css'%}">
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="mr-auto ml-auto mt-3 col-lg-4 col-md-6 col-sm-8 col-10">
+            <div class="card text-center p-4">
+                <h1>Instagram</h1>
+                <p class="text-secondary">친구들의 사진과 동영상을 보려면 가입하세요</p>
+                <button type="button" class="btn btn-primary btn-md">Facebook으로 로그인</button>
+                <div class="dropdown-divider mt-4"></div>
+                <form action="" method="POST">
+                    <input type="email" class="form-control mt-3" placeholder="휴대폰 번호 또는 이메일 주소">
+                    <input type="text" class="form-control mt-3" placeholder="성명">
+                    <input type="text" class="form-control mt-3" placeholder="사용자 이름">
+                    <input type="password" class="form-control mt-3" placeholder="비밀번호">
+                    <button type="submit" class="btn btn-primary btn-md mt-3 btn-block">가입</button>
+                </form>
+                <p class="mt-3 text-secondary">가입하면 Instagram의 약관, 데이터 정책 및 쿠키 정책에 동의하게 됩니다. </p>
+            </div>
+
+            <div class="card text-center mt-3 mb-3 pt-3 pb-3">
+                <div class="card-body">
+                    계정이 있으신가요? <a href="#">로그인</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

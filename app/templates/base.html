@@ -1,0 +1,15 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'bootstrap/bootstrap.css'%}">
+    <title>Instagram</title>
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <div id="wrap">
+    {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
