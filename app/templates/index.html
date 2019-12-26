@@ -14,6 +14,9 @@
                 <button type="button" class="btn btn-primary btn-md">Facebook으로 로그인</button>
                 <div class="dropdown-divider mt-4"></div>
                 <form action="" method="POST">
+                    {% csrf_token %}
+                    <div>{{request.user}}</div>
+                    <div>{{request.user.is_authenticated}}</div>
                     <input type="email" class="form-control mt-3" placeholder="휴대폰 번호 또는 이메일 주소">
                     <input type="text" class="form-control mt-3" placeholder="성명">
                     <input type="text" class="form-control mt-3" placeholder="사용자 이름">

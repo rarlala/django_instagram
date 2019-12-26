@@ -11,6 +11,7 @@
             <div class="card text-center p-4">
                 <h1>Instagram</h1>
                  <form method="POST" class="mt-4">
+                    {% csrf_token %}
                     <input type="text" class="form-control mt-3" name="username" placeholder="전화번호, 사용자 이름 또는 이메일">
                     <input type="password"  class="form-control mt-3" name="password" placeholder="비밀번호">
                     <button type="submit" class="btn btn-primary btn-md mt-3 btn-block">로그인</button>
