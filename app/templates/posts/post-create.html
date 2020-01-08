@@ -1,0 +1,9 @@
+<html>
+<body>
+    <form action="{% url 'posts:post-create' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">작성</button>
+    </form>
+</body>
+</html>
