@@ -25,6 +25,11 @@ class PostComment(models.Model):
 
 
 class PostLike(models.Model):
+    """
+    사용자가 좋아요 누른 Post 정보를 저장
+    Many-to-many 필드를 중간모델을 거쳐 사용
+    언제 생성되었는지 Extra field로 저장
+    """
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)

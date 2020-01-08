@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 
-from posts.models import Post
+from posts.models import Post, PostLike
 
 
 def post_list(request):
@@ -24,5 +24,33 @@ def post_list(request):
     context = {
         'posts': posts,
     }
-
     return render(request, 'posts/post-list.html', context)
+
+
+def post_like(request, pk):
+    """
+    pk가 pk인 Post와 (변수명 post사용)
+    request.user로 전달되는 User(변수명 user사용)에 대해
+
+    1. PostLike(post=post, user=user)인 객체가 존재하는지 확인
+        없다면 생성한다.
+        이미 있다면, 삭제한다.
+    2. 완료 후 posts:post-list로 redirect한다.
+
+    URL : /posts/<pk>/like/
+    """
+
+    post = Post.objects.get(pk=pk)
+    user = request.user
+    print('post')
+    print('user')
+
+    post_like_qs = PostLike.objects.filter(post=post, user=user)
+
+    if post_like_qs.exists():
+        post_like_qs.delete()
+
+    else:
+        PostLike.objects.create(post=post, user=user)
+
+    return redirect('posts:post-list')

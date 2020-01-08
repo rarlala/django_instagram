@@ -1,9 +1,13 @@
 from django.urls import path
 
-from posts.views import post_list
+from . import views
 
 app_name = 'posts'
 
 urlpatterns = [
-    path('', post_list, name='postList')
+    # /posts/
+    path('', views.post_list, name='post-list'),
+
+    # /posts/3/like/
+    path('<int:pk>/like/', views.post_like, name='post-like'),
 ]
