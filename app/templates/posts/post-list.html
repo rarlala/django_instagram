@@ -13,6 +13,16 @@
 <div>작성자: {{post.author}}</div>
 <div>작성일시: {{post.created}}</div>
 <div>글내용: {{post.content}}</div>
+
+{% for post_image in post.postimage_set.all %}
+    <img src="{{post_image.image.url}}">
+{% endfor %}
+
+
+<!--
+    이 post가 가진 PostImage들을 출력
+    <img src="무언가.image.url">
+-->
 <!--
     post_list에 POST 요청을 보내는 Form 구현
     - input을 갖지 않음

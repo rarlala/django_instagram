@@ -7,7 +7,7 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField(blank=True)
     like_users = models.ManyToManyField(User, through='PostLike', related_name='like_posts_set',)
-    created = models.DateTimeField(auto_now_add=True)
+    created= models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f'author: {self.author}, content: {self.content}, like_users: {self.like_users}, created:{self.created}'
