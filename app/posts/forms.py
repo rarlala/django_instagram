@@ -8,6 +8,7 @@ class PostCreateForm(forms.Form):
         Image(File)
         Text
     """
-    Image = forms.ImageField()
-    Text = forms.CharField()
-
+    image = forms.ImageField(
+        widget=forms.ClearableFileInput(attrs={'multiple': True, })
+    )
+    text = forms.CharField()

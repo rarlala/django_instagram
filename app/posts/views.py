@@ -78,17 +78,17 @@ def post_create(request):
             post와 전달받은 image를 사용
         모든 생성이 완료되면 posts:post-list로 redirect
         """
-        text = request.POST['Text']
-        image = request.FILES['Image']
+        text = request.POST['text']
+        images = request.FILES.getlist('image')
 
-
-        # post.postimage_set.create(image=image)
         post = Post.objects.create(
             author=request.user,
             content=text,
         )
 
-        post_image = PostImage.objects.create(post=post, image=image)
+        for image in images:
+            post.postimage_set.create(image=image)
+
         return redirect('posts:post-list')
     else:
         form = PostCreateForm()
