@@ -1,64 +1,80 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-    <div>Autuenticated : {{request.user.is_authenticated}}</div>
     <div>
         {% if request.user.is_authenticated %}
             <a href="{%url 'members:logout' %}" class="btn btn-primary btn-md mt-3"> 로그아웃 버튼</a>
             <a href="{%url 'posts:post-create' %}" class="btn btn-primary btn-md mt-3"> 글작성 버튼</a>
         {% endif %}
     </div>
-{% for post in posts %}
-<div>작성자: {{post.author}}</div>
-<div>작성일시: {{post.created}}</div>
-<div>글내용: {{post.content}}</div>
 
-{% for post_image in post.postimage_set.all %}
-    <img src="{{post_image.image.url}}">
-{% endfor %}
+    {% for post in posts %}
+    <div>작성자: {{post.author}}</div>
+    <div>작성일시: {{post.created}}</div>
+    <div>글내용: {{post.content}}</div>
 
-
-<!--
-    이 post가 가진 PostImage들을 출력
-    <img src="무언가.image.url">
--->
-<!--
-    post_list에 POST 요청을 보내는 Form 구현
-    - input을 갖지 않음
-    - csrf_token만 추가
-    - 보내는 곳(action)에, {#{% url %}#} 태그를 적절히 활용
-      Post의 pk에 따라 위와 같은 URL을 동적으로 생성해야 함
--->
-<form action="{% url 'posts:post-like' pk=post.pk %}" method="POST">
-    {% csrf_token %}
+        {% for post_image in post.postimage_set.all %}
+            <img src="{{post_image.image.url}}" style="max-width:200px;">
+        {% endfor %}
 
     <!--
-        사용 가능한 변수는 user(USER), post(POST)
-        좋아요 눌린 상태 : PostLike 객체가 존재하는 상태
-                    PostLike.objects.filter(user=user,post=post).exist()
-
-        user와 post.like_users를 적절히 이용해서
-        현재 request.user가 이 Post의 like_users에 포함되는지를 검사해서
-        아래의 if/else/endif 구문이 동작하도록 작성해본다.
-
-        Template에서의 메서드 콜
-            post.like_users.all() -> post.like_users.all
-            호출구문을 제외해야한다.
-
-        in operator
-        <변수> in <반복가능개체(QuerySet 등)>
-        -> True, False를 반환
+        이 post가 가진 PostImage들을 출력
+        <img src="무언가.image.url">
     -->
+    <!--
+        post_list에 POST 요청을 보내는 Form 구현
+        - input을 갖지 않음
+        - csrf_token만 추가
+        - 보내는 곳(action)에, {#{% url %}#} 태그를 적절히 활용
+          Post의 pk에 따라 위와 같은 URL을 동적으로 생성해야 함
+    -->
+    <form action="{% url 'posts:post-like' pk=post.pk %}" method="POST">
+        {% csrf_token %}
 
-    {% if user in post.like_users.all %}
-    {# {% if post in user.like_post_set.all %} #}
-        <button class="btn btn-primary" type="submit">좋아요 취소</button>
-    {% else %}
-        <button class="btn btn-outline-primary" type="submit">좋아요</button>
-    {% endif %}
+        <!--
+            사용 가능한 변수는 user(USER), post(POST)
+            좋아요 눌린 상태 : PostLike 객체가 존재하는 상태
+                        PostLike.objects.filter(user=user,post=post).exist()
 
-</form>
-<hr>
-{% endfor %}
+            user와 post.like_users를 적절히 이용해서
+            현재 request.user가 이 Post의 like_users에 포함되는지를 검사해서
+            아래의 if/else/endif 구문이 동작하도록 작성해본다.
+
+            Template에서의 메서드 콜
+                post.like_users.all() -> post.like_users.all
+                호출구문을 제외해야한다.
+
+            in operator
+            <변수> in <반복가능개체(QuerySet 등)>
+            -> True, False를 반환
+        -->
+
+        {% if user in post.like_users.all %}
+        {# {% if post in user.like_post_set.all %} #}
+            <button class="btn btn-primary" type="submit">좋아요 취소</button>
+        {% else %}
+            <button class="btn btn-outline-primary" type="submit">좋아요</button>
+        {% endif %}
+    </form>
+
+    <div>
+        {% for comment in post.postcomment_set.all %}
+        <ul>
+            <li>
+                <b>작성자: {{comment.author}}</b>
+                <span>내용: {{comment.content}}</span>
+            </li>
+        </ul>
+        {% endfor %}
+    </div>
+
+    <form action="{% url 'posts:comment-create' post_pk=post.pk %}" method="POST">
+        {% csrf_token %}
+        <label for="comment">댓글 작성: </label>
+        <textarea type="text" id="comment" name="comment" cols="30" rows="3"></textarea>
+        <button type="submit">OK</button>
+    </form>
+
+    <hr>
+    {% endfor %}
 {% endblock %}

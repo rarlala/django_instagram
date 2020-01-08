@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 
 from posts.forms import PostCreateForm
-from posts.models import Post, PostLike, PostImage
+from posts.models import Post, PostLike, PostImage, PostComment
 
 
 def post_list(request):
@@ -96,3 +96,24 @@ def post_create(request):
             'form': form,
         }
         return render(request, 'posts/post-create.html', context)
+
+
+def comment_create(request, post_pk):
+    # URL: /posts/<int:post_pk>/comments/create/
+    # Template: 없음 (post_list.html 내에 Form을 구현)
+    #  post-list.html 내부에서, 각 Post마다 자신에게 연결된 PostComment목록을 보여주도록 함
+    #   보여주는 형식은
+    #   <ul>
+    #       <li><b>작성자명</b><span>내용</span>/li>
+    #       <li><b>작성자명</b><span>내용</span>/li>
+    #   </ul>
+    # Form: post.forms.CommentCreateForm
+
+    comment = request.POST['comment']
+
+    post = Post.objects.get(pk=post_pk)
+
+    PostComment.objects.create(post=post, author=request.user, content=comment)
+    # post.postcomment_set.creata(post=post, author=request.user, content=comment)
+
+    return redirect('posts:post-list')
