@@ -1,6 +1,8 @@
 from django.contrib.auth import login, authenticate
 from django.shortcuts import redirect, render
 
+from members.forms import SignupForm
+
 
 def index(request):
     if request.user.is_authenticated:
@@ -8,6 +10,12 @@ def index(request):
 
     else:
         return render(request, 'index.html')
+
+# def signup_form(request):
+#     if request.method == 'POST':
+#         if form.is_valid():
+#             form.save()
+#         return redirect('members:')
 
 # base.html 추가
 # 상단에 {% load static %}

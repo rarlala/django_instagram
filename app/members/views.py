@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, login, get_user_model, logout
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from .forms import LoginForm
 
 # from members.models import User
 User = get_user_model()
@@ -21,8 +22,12 @@ def login_view(request):
         else:
             return redirect('index')
 
-    else:
-        return render(request, 'members/login.html')
+    form = LoginForm()
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'members/login.html', context)
 
 
 def signup_view(request):
