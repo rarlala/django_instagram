@@ -8,6 +8,9 @@
     {% endif %}
 </div>
 
+<div>{{request.user}}</div>
+<div>{{request.user.is_authenticated}}</div>
+
 {% for post in posts %}
 <div>작성자: {{post.author}}</div>
 <div>작성일시: {{post.created}}</div>

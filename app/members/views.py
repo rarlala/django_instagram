@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login, get_user_model, logout
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from .forms import LoginForm
+from .forms import LoginForm, SignupForm
 
 # from members.models import User
 User = get_user_model()
@@ -24,33 +24,31 @@ def login_view(request):
 
 def signup_view(request):
     """
-    Template : index.html을 그대로 사용
-        action만 이쪽으로
-    URL: /members/signup/
-    User에 name 필드를 추가
-        email, username, name, password
-        를 전달받아 새로운 User를 생성한다.
-        생성 시, User.objects.create_user() 메서드를 사용한다.
-
-    이미 존재하는 username또는 email을 입력한 경우, "이미 사용중인 username/email 입니다" 라는 메시지를 HttpResponse로 돌려준다.
-
+    config.views.index 삭제
+    Template : index.html을 복사해서 /members/signup.html
+    URL: /
+    From: members.forms.SignupForm
     생성에 성공하면 로그인 처리 후 (위 login_view 참조) posts:post-list로 redirect 처리
     """
 
-    email = request.POST['email']
-    username = request.POST['username']
-    name = request.POST['name']
-    password = request.POST['password']
+    if request.method == 'POST':
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            form.login(request, user)
+            return redirect('posts:post-list')
+    else:
+        form = SignupForm()
 
-    if User.objects.filter(username=username).exists():
-        return HttpResponse('이미 사용중인 username/email 입니다')
-    if User.objects.filter(email=email).exists():
-        return HttpResponse('이미 사용중인 username/email 입니다')
+    context = {
+        'form': form
+    }
 
-    user = User.objects.create_user(email=email, username=username, name=name, password=password)
+    if request.user.is_authenticated:
+        return redirect('posts:post-list')
 
-    login(request, user)
-    return redirect('posts:post-list')
+    else:
+        return render(request, 'members/signup.html', context)
 
 
 def logout_view(request):
