@@ -17,6 +17,15 @@
                         {{ field }}
                     </div>
                     {% endfor %}
+
+                    {% if form.non_field_errors %}
+                        <ul class="list-unstyled text-danger">
+                            {% for error in form.non_field_errors %}
+                                <li>{{ error|escape }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+
                     <button type="submit" class="btn btn-primary btn-md mt-3 btn-block">로그인</button>
                 </form>
                 <div class="dropdown-divider mt-4"></div>

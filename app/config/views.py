@@ -1,7 +1,7 @@
 from django.contrib.auth import login, authenticate
 from django.shortcuts import redirect, render
 
-from members.forms import SignupForm
+
 
 
 def index(request):

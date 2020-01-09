@@ -14,15 +14,14 @@
                 <button type="button" class="btn btn-primary btn-md">Facebook으로 로그인</button>
                 <div class="dropdown-divider mt-4"></div>
 
-                <form action="{% url 'members:signup_view' %}" method="POST">
+                <form action="" method="POST">
                     {% csrf_token %}
-                    {{ signup_form }}
-                <!-- <div>{{request.user}}</div>-->
-                <!-- <div>{{request.user.is_authenticated}}</div>-->
-                <!-- <input type="email" name="email" class="form-control mt-3" placeholder="이메일 주소">-->
-                <!-- <input type="text" name="username" class="form-control mt-3" placeholder="성명">-->
-                <!-- <input type="text" name="name" class="form-control mt-3" placeholder="사용자 이름">-->
-                <!-- <input type="password" name="password" class="form-control mt-3" placeholder="비밀번호">-->
+                    <div>{{request.user}}</div>
+                    <div>{{request.user.is_authenticated}}</div>
+                    <input type="email" name="email" class="form-control mt-3" placeholder="이메일 주소">
+                    <input type="text" name="username" class="form-control mt-3" placeholder="성명">
+                    <input type="text" name="name" class="form-control mt-3" placeholder="사용자 이름">
+                    <input type="password" name="password" class="form-control mt-3" placeholder="비밀번호">
                     <button type="submit" class="btn btn-primary btn-md mt-3 btn-block">가입</button>
                 </form>
                 <p class="mt-3 text-secondary">가입하면 Instagram의 약관, 데이터 정책 및 쿠키 정책에 동의하게 됩니다. </p>

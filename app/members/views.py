@@ -9,24 +9,16 @@ User = get_user_model()
 
 def login_view(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-
-        user = authenticate(request, username=username, password=password)
-
-        if user:
-            login(request, user)
-
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            form.login(request)
             return redirect('posts:post-list')
+    else:
+        form = LoginForm()
 
-        else:
-            return redirect('index')
-
-    form = LoginForm()
     context = {
         'form': form,
     }
-
     return render(request, 'members/login.html', context)
 
 
