@@ -4,7 +4,7 @@ from posts.forms import PostCreateForm, CommentCreateForm
 from posts.models import Post, PostLike, PostImage, PostComment
 
 
-def post_list(request):
+def post_list(request, tag=None):
     """
     1. 로그인 완료 후 이 페이지로 이동하도록 함
     2. index에 접근할 때 로그인이 되어있다면, 이 페이지로 이동하도록 함
@@ -19,10 +19,12 @@ def post_list(request):
     순서는 pk의 역순
     그리고 전달받은 QuerySet을 순회하며 적절히 Post내용을 출력
     """
+    if tag is None:
+        posts = Post.objects.order_by('-pk')
+    else:
+        posts = Post.objects.filter(tags__name__iexact=tag).order_by('-pk')
 
-    posts = Post.objects.order_by('-pk')
     comment_form = CommentCreateForm()
-
     context = {
         'posts': posts,
         'comment_form': comment_form,
