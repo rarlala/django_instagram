@@ -14,7 +14,7 @@
 {% for post in posts %}
 <div>작성자: {{post.author}}</div>
 <div>작성일시: {{post.created}}</div>
-<div>글내용: {{post.content}}</div>
+<div>글내용: {{post.content_html | safe}}</div>
 
 {% for post_image in post.postimage_set.all %}
 <img src="{{post_image.image.url}}" style="max-width:200px;">

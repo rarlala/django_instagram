@@ -9,9 +9,22 @@ class PostCreateForm(forms.Form):
         Text
     """
     image = forms.ImageField(
-        widget=forms.ClearableFileInput(attrs={'multiple': True, })
+        widget=forms.ClearableFileInput(
+            attrs={
+                'class':'form-control',
+                'multiple': True,
+        })
     )
-    text = forms.CharField()
+    text = forms.CharField(
+        widget=forms.Textarea(
+            attrs={
+                'class':'form-control',
+            }
+        )
+    )
+
+    def save(self):
+        pass
 
 
 class CommentCreateForm(forms.Form):

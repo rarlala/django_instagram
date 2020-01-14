@@ -9,6 +9,7 @@ class Post(models.Model):
     # 인스타그램의 포스트
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField(blank=True)
+    content_html = models.TextField(blank=True)
     like_users = models.ManyToManyField(User, through='PostLike', related_name='like_posts_set',)
     created = models.DateTimeField(auto_now_add=True)
     tags = models.ManyToManyField(
@@ -18,8 +19,25 @@ class Post(models.Model):
     def __str__(self):
         return f'author: {self.author}, content: {self.content}, like_users: {self.like_users}, created:{self.created}'
 
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
+
+    def _save_html(self):
+        """
+        content 속성의 값을 사용해서 해시태그에 해당하는 문자열을 a태그로 바꾸어 줌
+        :return: 해시태그가 a태그로 변환된 HTML
+        """
+        # 자신의 content_html에 #Python -> <a ~>로 변환된 문자열을 저장
+        self.content_html = re.sub(
+            self.TAG_PATTERN,
+            r'<a href="/explore/tags/\g<1>">#\g<1></a>',
+            self.content,
+        )
+
+    def _save_tags(self):
+        """
+        content에 포함된 해시태그 문자열 (ex. #Python)의 Tag를 만들고,
+        자신의 tags Many-to-many field에 추가한다.
+        :return:
+        """
         # Post 객체가 저장될 때, content 값을 분석해서
         # 자신의 tags항목을 적절히 채워줌
         # ex) #Django #Python이 온 경우
@@ -40,6 +58,14 @@ class Post(models.Model):
         tags = [Tag.objects.get_or_create(name=tag_name)[0] for tag_name in tag_name_list]
         self.tags.set(tags)
 
+        # self.content = content_html
+        # print("알고싶은 정보2", self.content)
+        # self.save()
+
+    def save(self, *args, **kwargs):
+        self._save_html()
+        super().save(*args, **kwargs)
+        self._save_tags()
 
 class PostImage(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
