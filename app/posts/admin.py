@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from posts.models import Post, PostImage, PostComment, PostLike
+from posts.models import Post, PostImage, PostComment, PostLike, Tag
+
 
 class PostImageInline(admin.TabularInline):
     model = PostImage
@@ -26,7 +27,7 @@ class PostAdmin(admin.ModelAdmin):
 
     inlines = [
         PostImageInline,
-        PostCommentInline
+        PostCommentInline,
     ]
 
     # 마찬가지로 PostComment에도 곧바로 추가할 수 있도록 한다.
@@ -42,4 +43,8 @@ class PostCommentAdmin(admin.ModelAdmin):
 
 @admin.register(PostLike)
 class PostLikeAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
     pass
