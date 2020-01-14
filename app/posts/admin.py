@@ -30,6 +30,8 @@ class PostAdmin(admin.ModelAdmin):
         PostCommentInline,
     ]
 
+    readonly_fields = ('tags',)
+
     # 마찬가지로 PostComment에도 곧바로 추가할 수 있도록 한다.
     # 위와같음
 
