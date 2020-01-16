@@ -16,6 +16,7 @@ class Post(models.Model):
         'Tag', verbose_name='해시태그 목록', related_name="posts", blank=True,
     )
 
+
     def __str__(self):
         return f'author: {self.author}, content: {self.content}, like_users: {self.like_users}, created:{self.created}'
 
