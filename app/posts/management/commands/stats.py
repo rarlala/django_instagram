@@ -11,9 +11,11 @@ class Command(BaseCommand):
     help = 'Posts, Comments, Tags 개수 출력'
 
     def handle(self, *args, **options):
+        now = timezone.now()
+        # instagram/.media/now.txt
+        # 파일이 이미 있다면 다음줄에 기록
+        # 파일이 없다면 파일을 생성하고 기록
 
-        print('''
-            전체 Posts: {}개,
-            전체 Comments: {}개,
-            전체 Tags: {}개
-        '''.format(Post.objects.all().count(), PostComment.objects.all().count(), Tag.objects.all().count()))
+        with open(os.path.join(MEDIA_ROOT, 'now.txt'), 'at') as f:
+            time_str = f'Now: + {timezone.localtime(now).strftime("%Y-%m-%d %H:%M:%S")}\n'
+            f.write(time_str)
