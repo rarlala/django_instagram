@@ -3,12 +3,13 @@ import urllib
 from django.contrib.auth import authenticate, login, get_user_model, logout
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+
+from config.settings import json_data
 from .forms import LoginForm, SignupForm
 import requests
 
 # from members.models import User
 User = get_user_model()
-
 
 def login_view(request):
     if request.method == 'POST':
@@ -22,7 +23,7 @@ def login_view(request):
     login_base_url = 'https://nid.naver.com/oauth2.0/authorize'
     login_params = {
         'response_type': 'code',
-        'client_id': 'BSGbrKFgPs7p0wZLG3nY',
+        'client_id': json_data['client_id'],
         'redirect_uri': 'http://localhost:8000/members/naver-login/',
         'state': 'RANDOM_STATE',
     }
@@ -56,8 +57,8 @@ def naver_login(request):
     token_base_url = 'https://nid.naver.com/oauth2.0/token'
     token_params = {
         'grant_type': 'authorization_code',
-        'client_id': 'BSGbrKFgPs7p0wZLG3nY',
-        'client_secret': 'cy77SSUoKr',
+        'client_id': json_data['client_id'],
+        'client_secret': json_data['client_secret'],
         'redirect_uri': 'http://localhost:8000/members/naver-login/',
         'code': code,
         'state': request.GET['state'],

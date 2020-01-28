@@ -9,10 +9,11 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
-
-import os
+import os, json
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from django.core.exceptions import ImproperlyConfigured
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ROOT_DIR = os.path.dirname(BASE_DIR)
 
@@ -31,6 +32,26 @@ STATIC_DIR = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
     STATIC_DIR,
 ]
+
+# django-storages
+# Django FileStorage로 S3Boto3Storage(AWS의 S3)를 사용
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# instagram/secrets.json파일을 읽어서
+# 파이썬 객체로 만든다음
+# 아래있는 ACCESS_KEY_ID, SECRET_ACCESS_KEY 값을 적절히 채워준다.
+
+secret_file = os.path.join(ROOT_DIR, 'secrets.json')
+
+with open(secret_file) as f:
+    json_data = json.load(f)
+
+# DATABASE 쪽의 비밀정보
+# naver_login에 있는 client_id, client_secret
+AWS_ACCESS_KEY_ID = json_data['AWS_ACCESS_KEY_ID']
+AWS_SECRET_ACCESS_KEY = json_data['AWS_SECRET_ACCESS_KEY']
+AWS_STORAGE_BUCKET_NAME = 'wps-instagram-jsj2'
+AWS_AUTO_CREATE_BUCKET = True
+AWS_S3_REGION_NAME = 'ap-northeast-2'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -95,16 +116,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'instagram',
-        'USER': 'jsj',
-        'PASSWORD': '패스워드입력',
-        'HOST': 'wps-jsj.cem8vmssrn1f.ap-northeast-2.rds.amazonaws.com',
-        'PORT':'5432',
-    }
-}
+DATABASES = json_data['DATABASES']
 
 
 # Password validation

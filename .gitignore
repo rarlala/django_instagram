@@ -1,3 +1,5 @@
+secrets.json
+
 .idea
 # Django User_uploaded static files root
 /.media
