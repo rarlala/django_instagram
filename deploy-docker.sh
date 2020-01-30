@@ -33,6 +33,10 @@ ${SSH_CMD} -C 'sudo docker stop instagram'
 echo "docker pull"
 ${SSH_CMD} -C 'sudo docker pull devsuji/wps-instagram instagram'
 
+# 로컬의 aws profile을 전달
+${SSH_CMD} -C "sudo rm -rf /home/ubuntu/.aws"
+scp -q -i "${IDENTITY_FILE}" -r "$HOME/.aws" ${HOST}:/home/ubuntu/
+
 echo "screen settings"
 # 실행중이던 screen 종료
 ${SSH_CMD} -C 'screen -X -S docker quit'

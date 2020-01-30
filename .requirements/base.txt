@@ -1,7 +1,9 @@
 boto3
 django<3
 django-extensions
+django-secrets-manager
 django-storages
 Pillow
 psycopg2-binary
 request
+
