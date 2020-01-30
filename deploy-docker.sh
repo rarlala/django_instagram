@@ -17,8 +17,14 @@ ${SSH_CMD} -C 'sudo apt -y install docker.io'
 echo "pip freeze"
 "$HOME"/.pyenv/versions/3.7.5/envs/wps-instagram-env/bin/pip freeze > "${ORIGIN_SOURCE}"requirements.txt
 
+echo "poetry export"
+poetry export -f requirements.txt > requirements.txt
+
 # docker build
 echo "docker build"
+# 이 과정에서 poery export를 사용해서 requirements.txt 생성
+# > dev 패키지는 설치하지 않도록 한다. (공식문서 또는 사용법 보기)
+
 docker build -q -t ${DOCKER_REPO} -f Dockerfile "${ORIGIN_SOURCE}"
 
 # docker push

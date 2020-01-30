@@ -1,4 +1,5 @@
-secrets.json
+/requirements.txt
+/secrets.json
 
 .idea
 # Django User_uploaded static files root
