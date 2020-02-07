@@ -1,2 +1,6 @@
 /.git
 /.media
+/.static
+/secrets.json
+/deploy*.py
+/deploy*.sh

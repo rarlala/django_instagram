@@ -1,11 +1,17 @@
 #!/usr/bin/env sh
 IDENTIFY_FILE="$HOME/.ssh/wps12th.pem"
-HOST="ubuntu@15.164.97.33"
+HOST="ubuntu@13.125.12.122"
 ORIGIN_SOURCE="$HOME/projects/wps12th/instagram"
-DEST_SOURCE="/home/ubuntu/projects/instagram"
+DEST_SOURCE="/home/ubuntu/projects"
 SSH_CMD="ssh -i ${IDENTIFY_FILE} ${HOST}"
 
 echo "==runserver 배포=="
+
+# 서버 초기설정
+echo "apt update & upgrade & autoremove"
+${SSH_CMD} -C 'sudo apt update && sudo DEBIAN_FRONTEND=noninteractive apt dist-upgrade -y && apt -y autoremove'
+echo "apt install python3-pip"
+${SSH_CMD} -C 'sudo apt -y install python3-pip'
 
 # pip freeze
 echo "pip freeze"
@@ -21,7 +27,8 @@ scp -q -i "${IDENTIFY_FILE}" -r "${ORIGIN_SOURCE}" ${HOST}:${DEST_SOURCE}
 
 # pip install
 echo "pip install"
-${SSH_CMD} pip3 install -q -r /home/ubuntu/projects/instagram/requirements.txt
+#${SSH_CMD} sudo apt install python3-pip
+${SSH_CMD} pip3 install -q -r /home/ubuntu/projects/requirements.txt
 
 echo "screen settings"
 # 실행중이던 screen 종료
@@ -31,6 +38,6 @@ ${SSH_CMD} -C 'screen -X -S runserver quit'
 ${SSH_CMD} -C 'screen -S runserver -d -m'
 
 # 실행중인 세션에 명령어 전달
-${SSH_CMD} -C "screen -r runserver -X stuff 'sudo python3 /home/ubuntu/projects/instagram/app/manage.py runserver 0:80\n'"
+${SSH_CMD} -C "screen -r runserver -X stuff 'sudo python3 /home/ubuntu/projects/app/manage.py runserver 0:80\n'"
 
 echo "배포완료!"

@@ -1,4 +1,7 @@
 #!/usr/bin/env sh
+
+# EC2에 DOCKER 배포
+
 IDENTIFY_FILE="$HOME/.ssh/wps12th.pem"
 HOST="ubuntu@54.180.97.157"
 ORIGIN_SOURCE="$HOME/projects/wps12th/instagram"

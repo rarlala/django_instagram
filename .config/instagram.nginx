@@ -1,0 +1,57 @@
+#server {
+#    # 80번 포트로 온 요청에 응답할 Block임
+#    listen 80;
+#
+#    # HTTP요청의 Host 값 (URL에 입력한 도메인)
+#    server_name rarlaj.com www.rarlaj.com;
+#
+#    # 인코딩 utf-8설정
+#    charset utf-8;
+#
+#    # root로부터의 요청에 대해 응답할 Block
+#    location / {
+#        # /run/gunicorn.sock 파일을 사용해서 Gunicorn과 소켓 통신하는 Proxy 구성
+#        proxy_pass      http://unix:/run/instagram.sock;
+#    }
+#
+#    # http://localhost/static
+#    location /static/ {
+#        alias           /srv/instagram/.static/;
+#    }
+#
+#    location /.well-known/acme-challenge/ {
+#        alias           /srv/instagram/.cert/;
+#    }
+#}
+server {
+    listen 80;
+    server_name rarlaj.com www.rarlaj.com;
+    charset utf-8;
+
+    location /.well-known/acme-challenge/ {
+        alias           /srv/instagram/.cert/;
+    }
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+server{
+    listen 443 ssl;
+    server_name rarlaj.com www.rarlaj.com;
+    charset utf-8;
+
+    # https 관련 설정
+    ssl on;
+    ssl_certificate     /etc/letsencrypt/live/rarlaj.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/rarlaj.com/privkey.pem;
+
+    location / {
+        # 일반적으로 proxy로 요청을 넘겨줄 경우 필요한 설정들
+        include         /etc/nginx/proxy_params;
+        proxy_pass      http://unix:/run/instagram.sock;
+    }
+    location /static/ {
+        alias           /srv/instagram/.static/;
+    }
+}
