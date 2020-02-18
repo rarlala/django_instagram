@@ -18,10 +18,17 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
+from members import urls_apis
 from members.views import signup_view
 from posts.views import post_list
 
+urlpatterns_apis = [
+    path('members/', include('members.urls_apis')),
+]
+
 urlpatterns = [
+    path('api/', include(urlpatterns_apis)),
+
     path('', signup_view, name='signup'),
     path('admin/', admin.site.urls),
     path('members/', include('members.urls')),
