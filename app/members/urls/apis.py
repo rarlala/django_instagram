@@ -1,4 +1,4 @@
-from . import apis
+from .. import apis
 from django.urls import path
 
 urlpatterns = [
