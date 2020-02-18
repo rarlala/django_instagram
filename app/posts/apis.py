@@ -9,6 +9,6 @@ from posts.serializers import PostSerializer
 
 class PostListCreateAPIView (APIView):
     def get(self, request):
-        snippets = Post.objects.all()
-        serializer = PostSerializer(snippets, many=True)
+        posts = Post.objects.all()
+        serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
